@@ -22,6 +22,9 @@ android {
             resValue 'string', 'app_name', 'LOJ TV'
         }
     }
-    buildTypes { release { minifyEnabled false } debug { debuggable true } }
+    buildTypes {
+        release { minifyEnabled false }
+        debug { debuggable true }
+    }
     compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
 }
