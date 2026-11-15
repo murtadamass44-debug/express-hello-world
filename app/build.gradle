@@ -1,0 +1,27 @@
+plugins { id 'com.android.application' }
+android {
+    namespace 'com.loj.iptv'
+    compileSdk 35
+    defaultConfig {
+        applicationId 'com.loj.iptv'
+        minSdk 21
+        targetSdk 35
+        versionCode 1
+        versionName '1.0'
+    }
+    flavorDimensions 'device'
+    productFlavors {
+        mobile {
+            dimension 'device'
+            applicationIdSuffix '.mobile'
+            resValue 'string', 'app_name', 'LOJ Mobile'
+        }
+        tv {
+            dimension 'device'
+            applicationIdSuffix '.tv'
+            resValue 'string', 'app_name', 'LOJ TV'
+        }
+    }
+    buildTypes { release { minifyEnabled false } debug { debuggable true } }
+    compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+}
