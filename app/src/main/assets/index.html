@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f101a"><title>InstaTools</title>
+<style>
+:root{color-scheme:dark;--bg:#0f101a;--surface:#191a2a;--surface2:#22233a;--edge:#32334a;--pink:#ff4d8d;--purple:#9058ff;--text:#faf7ff;--muted:#a7a4bb}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,'Segoe UI',Tahoma,sans-serif;line-height:1.5}button,input,textarea{font:inherit}button{cursor:pointer}header{padding:27px 20px 19px;background:radial-gradient(ellipse at top left,#47203f 0%,transparent 57%),linear-gradient(140deg,#19152c,#151626);border-bottom:1px solid #383048}
+.top{display:flex;align-items:center;gap:12px}.logo{width:49px;height:49px;border-radius:17px;background:linear-gradient(140deg,#ffbe6b,#fc3c8c,#7c59ff);display:grid;place-items:center;font-size:29px;font-weight:900;color:white;box-shadow:0 8px 30px #fa438255}.brand{font-size:21px;font-weight:850;letter-spacing:.3px}.sub{color:#bfb9cc;font-size:12px}.tag{font-size:11px;margin-right:auto;padding:5px 10px;background:#49304a;color:#ffdce8;border-radius:50px}
+main{max-width:650px;margin:auto;padding:19px 17px 115px}.intro{font-size:23px;line-height:1.35;margin:1px 0 7px;font-weight:800}.highlight{background:linear-gradient(90deg,#ff649f,#a18bff);background-clip:text;color:transparent}
+.muted{color:var(--muted);font-size:13px;margin:5px 0 17px}.card{background:var(--surface);border:1px solid var(--edge);border-radius:20px;padding:17px;margin:13px 0;box-shadow:0 8px 25px #03020822}
+.card h2{font-size:17px;margin:0 0 10px}.icon{display:inline-flex;width:37px;height:37px;align-items:center;justify-content:center;border-radius:13px;background:#403054;margin-left:8px}
+input,textarea{width:100%;background:#11121d;color:white;border:1px solid #414158;outline:0;border-radius:13px;padding:13px 14px;font-size:15px;direction:auto}
+textarea{min-height:115px;resize:vertical}input:focus,textarea:focus{border-color:#a66eff}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}.btn{min-height:43px;border:1px solid #4c455b;background:#29293d;color:white;padding:10px 14px;border-radius:13px;font-weight:650;font-size:13px}
+.btn.primary{border:0;background:linear-gradient(105deg,#ed4386,#935af2);color:white}.btn.secondary{background:#30233d;color:#e9d8fa;border-color:#553e65}.btn.flex{flex:1}.btn:active{transform:scale(.98)}
+.options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}.tool{border:1px solid #39354d;background:#1f2031;border-radius:15px;text-align:right;padding:15px;min-height:90px;color:white}.tool b{display:block;margin-top:8px;font-size:14px}.tool small{font-size:11px;color:#b9adc6}.tool .emoji{font-size:24px}
+small{color:var(--muted)}.pill{border:1px solid #463b5a;border-radius:20px;font-size:11px;padding:3px 9px;color:#d8bfe7;display:inline-block}
+.tabs{position:fixed;bottom:0;left:0;right:0;display:flex;background:#191a29f8;border-top:1px solid #38364b;padding:8px 6px max(10px,env(safe-area-inset-bottom));z-index:5;backdrop-filter:blur(15px)}
+.tab{border:0;background:transparent;color:#9893aa;flex:1;padding:5px 1px;font-size:11px}.tab span{font-size:21px;display:block}.tab.active{color:#ff72a5;font-weight:700}
+.section{display:none}.section.active{display:block}.empty{border:1px dashed #45415c;border-radius:17px;padding:35px 15px;text-align:center;color:#a7a0b4;margin-top:14px}.entry{display:flex;align-items:center;gap:8px;padding:11px 0;border-bottom:1px solid #393449}.entry .content{min-width:0;flex:1}.entry .content b,.entry .content small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.entry .content small{direction:ltr;text-align:right}
+.notice{font-size:12px;color:#b6a9c4;line-height:1.65;background:#241f32;border:1px solid #473551;border-radius:13px;padding:12px;margin-top:12px}
+.toast{position:fixed;bottom:86px;left:20px;right:20px;margin:auto;max-width:440px;background:#3e2d50;color:white;padding:11px 17px;text-align:center;border-radius:13px;border:1px solid #aa71d5;display:none;z-index:10;box-shadow:0 10px 30px #0009}
+.divider{height:1px;background:#333146;margin:14px 0}
+label{font-size:12px;color:#c1b6d2;display:block;margin-bottom:5px}
+</style></head><body>
+<header><div class="top"><div class="logo">I</div><div><div class="brand">InstaTools</div><div class="sub">أدوات إنستغرام في تطبيق واحد</div></div><span class="tag">Android</span></div></header>
+<main>
+<section id="home" class="section active"><div class="intro">كل أدواتك <span class="highlight">بمكان واحد ✨</span></div><p class="muted">تصفّح، احفظ الروابط، نزّل الملفات المباشرة وانسخ النصوص بسهولة.</p>
+<div class="card"><h2><span class="icon">🔎</span> ابحث عن حساب أو منشور</h2><label for="link">اسم المستخدم أو رابط إنستغرام</label><input id="link" spellcheck="false" placeholder="username أو https://instagram.com/reel/..."><div class="actions"><button class="btn primary flex" onclick="openInput()">فتح في التطبيق ↗</button><button class="btn secondary" onclick="bookmarkInput()">♡ حفظ</button><button class="btn" onclick="pasteTo('link')">لصق</button></div>
+<div class="notice">الحساب الخاص يظهر إذا كان الحساب الذي تستخدمه مخوّلًا برؤية محتواه. تسجيل الدخول يتم داخل إنستغرام، وليس داخل أدواتنا.</div></div>
+<h2 style="font-size:17px;margin:22px 0 7px">وصول سريع</h2>
+<div class="options"><button class="tool" onclick="navigate('https://www.instagram.com/')"><span class="emoji">👤</span><b>الملفات الشخصية</b><small>استعرض الحسابات</small></button>
+<button class="tool" onclick="chooseType('stories')"><span class="emoji">📸</span><b>الستوري</b><small>روابط القصص</small></button>
+<button class="tool" onclick="chooseType('reels')"><span class="emoji">🎬</span><b>الريلز</b><small>المقاطع القصيرة</small></button>
+<button class="tool" onclick="chooseType('posts')"><span class="emoji">🖼️</span><b>المنشورات</b><small>عرض وحفظ الروابط</small></button></div></section>
+<section id="tools" class="section"><h1 class="intro">صندوق الأدوات 🧰</h1><p class="muted">خيارات تنزيل النصوص والملفات.</p>
+<div class="card"><h2><span class="icon">⬇️</span> تنزيل صورة أو فيديو</h2><p class="muted">ألصق رابط ملف مباشر ينتهي مثلًا بـ mp4 أو jpg، وليس رابط صفحة منشور.</p><input id="mediaUrl" placeholder="https://example.com/video.mp4" spellcheck="false">
+<div class="actions"><button class="btn primary flex" onclick="downloadMedia()">تنزيل الملف</button><button class="btn" onclick="pasteTo('mediaUrl')">لصق الرابط</button></div><div class="notice">رابط المنشور أو الريلز لا يُحوّل تلقائيًا إلى ملف. افتحه في إنستغرام، واحفظ رابطه هنا.</div></div>
+<div class="card"><h2><span class="icon">💬</span> نسخ التعليقات</h2><p class="muted">داخل متصفح إنستغرام اضغط «نسخ التعليقات» لاستخراج التعليقات الظاهرة عندما تسمح الصفحة بذلك. أو الصق النص هنا.</p>
+<textarea id="comments" placeholder="الصق أي تعليق هنا لنسخه أو تعديله..."></textarea><div class="actions"><button class="btn primary flex" onclick="copyComments()">نسخ التعليقات</button><button class="btn" onclick="pasteTo('comments')">لصق</button><button class="btn secondary" onclick="saveNote()">حفظ ملاحظة</button></div></div>
+<div class="card"><h2><span class="icon">📁</span> استعراض صور ومقاطع الجهاز</h2><p class="muted">افتح ملفاتك المحلية للمراجعة قبل المشاركة.</p><input id="localFiles" type="file" accept="image/*,video/*" multiple><div id="fileInfo" class="muted"></div></div></section>
+<section id="saved" class="section"><h1 class="intro">المحفوظات ♡</h1><p class="muted">الروابط والملاحظات محفوظة محليًا على جهازك.</p><div class="card"><label>بحث في المحفوظات</label><input id="filter" placeholder="ابحث عن اسم أو رابط..." oninput="renderSaved()"><div id="savedList"></div><div class="actions"><button class="btn secondary" onclick="exportSaved()">مشاركة قائمة الروابط</button><button class="btn" onclick="clearSaved()">حذف الكل</button></div></div></section>
+<section id="settings" class="section"><h1 class="intro">الإعدادات ⚙️</h1><div class="card"><h2>InstaTools 1.0</h2><p class="muted">مصمم خصيصًا لهواتف أندرويد. المتصفح الداخلي يستخدم جلسة منفصلة محفوظة محليًا؛ لا نحفظ كلمة مرور إنستغرام داخل التطبيق.</p><div class="divider"></div><button class="btn primary" onclick="navigate('https://www.instagram.com/')">فتح إنستغرام</button><div class="notice">المحتوى غير المتاح لحسابك في إنستغرام يبقى غير متاح هنا أيضًا. روابط الملفات المباشرة تُنزّل إلى مجلد Downloads/InstaTools.</div></div></section>
+</main><nav class="tabs"><button id="t-home" class="tab active" onclick="show('home')"><span>⌂</span>الرئيسية</button><button id="t-tools" class="tab" onclick="show('tools')"><span>▦</span>الأدوات</button><button id="t-saved" class="tab" onclick="show('saved')"><span>♡</span>المحفوظات</button><button id="t-settings" class="tab" onclick="show('settings')"><span>⚙</span>الإعدادات</button></nav><div id="toast" class="toast"></div>
+<script>
+const KEY='instatools.saved.v1';
+const el=id=>document.getElementById(id);
+let saved=[];try{saved=JSON.parse(localStorage.getItem(KEY)||'[]');if(!Array.isArray(saved))saved=[];}catch(e){saved=[];}
+function show(id){document.querySelectorAll('.section').forEach(e=>e.classList.toggle('active',e.id===id));document.querySelectorAll('.tab').forEach(e=>e.classList.toggle('active',e.id==='t-'+id));if(id==='saved')renderSaved();scrollTo(0,0);}
+function notify(s){let t=el('toast');t.textContent=s;t.style.display='block';setTimeout(()=>t.style.display='none',2500);}
+function normalize(s){s=(s||'').trim();if(!s)return null;
+ if(/^@?[a-zA-Z0-9._]{1,30}$/.test(s))return 'https://www.instagram.com/'+s.replace('@','')+'/';
+ try{let u=new URL(s);if(u.protocol!=='https:')return null;if(!['instagram.com','www.instagram.com','m.instagram.com'].includes(u.hostname.toLowerCase()))return null;return u.toString();}catch(e){return null;}
+}
+function navigate(url){if(window.App)App.openInstagram(url);else window.open(url,'_blank');}
+function openInput(){let url=normalize(el('link').value);if(!url)return notify('أدخل اسم حساب أو رابط إنستغرام صحيح');navigate(url);}
+function bookmarkInput(){let url=normalize(el('link').value);if(!url)return notify('أدخل اسم حساب أو رابط صحيح');save(url,'إنستغرام');}
+function save(url,title){if(saved.some(e=>e.url===url)){notify('الرابط محفوظ مسبقًا');return;}
+ saved.unshift({id:Date.now().toString()+Math.random().toString(16).slice(2),url,title,date:new Date().toLocaleDateString('ar-SA')});persist();notify('تمت الإضافة للمحفوظات');}
+function persist(){localStorage.setItem(KEY,JSON.stringify(saved));renderSaved();}
+function chooseType(type){show('home');el('link').focus();el('link').placeholder=type==='stories'?'رابط ستوري /stories/...':type==='reels'?'رابط ريلز /reel/...':'رابط منشور /p/...';notify('الصق الرابط المطلوب ثم افتحه');}
+function copy(s){if(window.App)App.copy(s);else navigator.clipboard.writeText(s).then(()=>notify('تم النسخ'));}
+function pasteTo(id){if(window.App){el(id).value=App.clipboard();if(!el(id).value)notify('الحافظة فارغة');}else notify('اللصق غير متاح');}
+function downloadMedia(){let u=el('mediaUrl').value.trim();if(!/^https:\/\/.+\.(jpg|jpeg|png|webp|mp4|mov|m4v|gif|heic)(\?.*)?$/i.test(u))return notify('مطلوب رابط ملف مباشر .mp4 أو .jpg');if(window.App)App.downloadDirect(u);}
+function copyComments(){let s=el('comments').value.trim();if(!s)return notify('اكتب أو الصق التعليقات أولًا');copy(s);}
+function saveNote(){let s=el('comments').value.trim();if(!s)return notify('اكتب النص أولًا');save('note:'+s,'ملاحظة');}
+function renderSaved(){const list=el('savedList'),q=(el('filter').value||'').toLowerCase();list.innerHTML='';let items=saved.filter(x=>(x.url+' '+x.title).toLowerCase().includes(q));if(!items.length){list.innerHTML='<div class="empty">ما عندك عناصر محفوظة إلى الآن ♡</div>';return;}
+ items.forEach(it=>{const d=document.createElement('div');d.className='entry';const content=document.createElement('div');content.className='content';const title=document.createElement('b');title.textContent=it.title;const small=document.createElement('small');small.textContent=it.url;content.append(title,small);d.appendChild(content);
+ const b=document.createElement('button');b.className='btn';b.textContent='فتح';b.onclick=()=>it.url.startsWith('https://')?navigate(it.url):copy(it.url.slice(5));
+ const c=document.createElement('button');c.className='btn';c.textContent='⧉';c.onclick=()=>copy(it.url);
+ const del=document.createElement('button');del.className='btn';del.textContent='✕';del.onclick=()=>{saved=saved.filter(x=>x.id!==it.id);persist();};d.append(b,c,del);list.appendChild(d);});}
+function clearSaved(){if(confirm('هل تريد حذف جميع المحفوظات من هذا الجهاز؟')){saved=[];persist();}}
+function exportSaved(){let s=saved.map(x=>x.title+'\n'+x.url).join('\n\n');if(window.App)App.share(s||'لا توجد روابط محفوظة');}
+function receiveShared(s){el('link').value=s;show('home');notify('تم استقبال الرابط');}
+el('localFiles').onchange=e=>{let a=[...e.target.files];el('fileInfo').textContent=a.map(f=>f.name+' ('+Math.round(f.size/1024)+' KB)').join(' • ');};
+renderSaved();
+</script></body></html>
