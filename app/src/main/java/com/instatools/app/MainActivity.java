@@ -123,6 +123,7 @@ public class MainActivity extends Activity {
             toolbar.setOrientation(LinearLayout.HORIZONTAL);toolbar.setGravity(Gravity.CENTER_VERTICAL);
             toolbar.setBackgroundColor(Color.rgb(27,27,43));toolbar.setPadding(dp(7),dp(3),dp(7),dp(3));
             addButton("⬇ تنزيل/حفظ",()->grabber.captureDom(remote));
+            addButton("📸 لقطة",()->grabber.saveScreenshot(remote));
             addButton("📥 ملفاتي",()->grabber.showHistory());
             addButton("⧉ تعليق",()->copyVisibleComments());
             addButton("✕ رجوع",()->closeRemote());
