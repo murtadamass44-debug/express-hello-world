@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0f101a"><title>InstaTools</title>
+<meta name="theme-color" content="#0f101a"><title>InstaTools — تنزيل الصور والريلز</title>
 <style>
 :root{color-scheme:dark;--bg:#0f101a;--surface:#191a2a;--surface2:#22233a;--edge:#32334a;--pink:#ff4d8d;--purple:#9058ff;--text:#faf7ff;--muted:#a7a4bb}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,'Segoe UI',Tahoma,sans-serif;line-height:1.5}button,input,textarea{font:inherit}button{cursor:pointer}header{padding:27px 20px 19px;background:radial-gradient(ellipse at top left,#47203f 0%,transparent 57%),linear-gradient(140deg,#19152c,#151626);border-bottom:1px solid #383048}
@@ -22,24 +22,29 @@ small{color:var(--muted)}.pill{border:1px solid #463b5a;border-radius:20px;font-
 .divider{height:1px;background:#333146;margin:14px 0}
 label{font-size:12px;color:#c1b6d2;display:block;margin-bottom:5px}
 </style></head><body>
-<header><div class="top"><div class="logo">I</div><div><div class="brand">InstaTools</div><div class="sub">أدوات إنستغرام في تطبيق واحد</div></div><span class="tag">Android</span></div></header>
+<header><div class="top"><div class="logo">I</div><div><div class="brand">InstaTools</div><div class="sub">تنزيل الصور والريلز وحفظها على الجهاز</div></div><span class="tag">Android</span></div></header>
 <main>
-<section id="home" class="section active"><div class="intro">كل أدواتك <span class="highlight">بمكان واحد ✨</span></div><p class="muted">تصفّح، احفظ الروابط، نزّل الملفات المباشرة وانسخ النصوص بسهولة.</p>
-<div class="card"><h2><span class="icon">🔎</span> ابحث عن حساب أو منشور</h2><label for="link">اسم المستخدم أو رابط إنستغرام</label><input id="link" spellcheck="false" placeholder="username أو https://instagram.com/reel/..."><div class="actions"><button class="btn primary flex" onclick="openInput()">فتح في التطبيق ↗</button><button class="btn secondary" onclick="bookmarkInput()">♡ حفظ</button><button class="btn" onclick="pasteTo('link')">لصق</button></div>
-<div class="notice">الحساب الخاص يظهر إذا كان الحساب الذي تستخدمه مخوّلًا برؤية محتواه. تسجيل الدخول يتم داخل إنستغرام، وليس داخل أدواتنا.</div></div>
+<section id="home" class="section active"><div class="intro">نزّل واحفظ <span class="highlight">الصور والفيديوهات ⬇️</span></div><p class="muted">افتح رابط المنشور أو الريلز، ثم اضغط زر «تنزيل/حفظ» في أسفل المتصفح لاختيار الملف وحفظه في معرض الجهاز.</p>
+<div class="card"><h2><span class="icon">⬇️</span> تنزيل من إنستغرام</h2><label for="link">اسم المستخدم أو رابط إنستغرام</label><input id="link" spellcheck="false" placeholder="username أو https://instagram.com/reel/..."><div class="actions"><button class="btn primary flex" onclick="openInput()">⬇ فتح المنشور للتنزيل</button><button class="btn secondary" onclick="bookmarkInput()">♡ حفظ</button><button class="btn" onclick="pasteTo('link')">لصق</button></div>
+<div class="notice"><b>طريقة الحفظ:</b> افتح الرابط ← شغّل الفيديو أو افتح الصورة ← اضغط «⬇ تنزيل/حفظ» ← اختر الملف ← «حفظ في الجهاز». يُحفظ في المعرض داخل InstaTools. الحساب المقفل يلزم أن يكون ظاهرًا لحسابك المسجّل.</div></div>
+<div class="card" style="border-color:#85486c;background:linear-gradient(130deg,#30213a,#1f2031)">
+<h2>📥 ملفاتي التي نزّلتها</h2>
+<p class="muted">افتح الصور ومقاطع الفيديو التي حفظتها من التطبيق في معرض الهاتف.</p>
+<button class="btn primary" onclick="downloads()">📂 فتح الملفات المحفوظة</button>
+</div>
 <h2 style="font-size:17px;margin:22px 0 7px">وصول سريع</h2>
 <div class="options"><button class="tool" onclick="navigate('https://www.instagram.com/')"><span class="emoji">👤</span><b>الملفات الشخصية</b><small>استعرض الحسابات</small></button>
 <button class="tool" onclick="chooseType('stories')"><span class="emoji">📸</span><b>الستوري</b><small>روابط القصص</small></button>
 <button class="tool" onclick="chooseType('reels')"><span class="emoji">🎬</span><b>الريلز</b><small>المقاطع القصيرة</small></button>
 <button class="tool" onclick="chooseType('posts')"><span class="emoji">🖼️</span><b>المنشورات</b><small>عرض وحفظ الروابط</small></button></div></section>
-<section id="tools" class="section"><h1 class="intro">صندوق الأدوات 🧰</h1><p class="muted">خيارات تنزيل النصوص والملفات.</p>
+<section id="tools" class="section"><h1 class="intro">صندوق الأدوات 🧰</h1><p class="muted">حفظ الملفات الأصلية في معرض أندرويد، ونسخ التعليقات.</p><div class="card"><h2>🎬 تنزيل صور وفيديوهات إنستغرام</h2><p class="muted">من الصفحة الرئيسية افتح رابط المنشور أو الريلز. سيظهر أسفل المتصفح زر «⬇ تنزيل/حفظ» لاكتشاف الملفات الموجودة بالصفحة ثم اختيار الصورة أو الفيديو المطلوب.</p><button class="btn primary" onclick="show('home')">اذهب لإدخال رابط التنزيل</button><button class="btn secondary" onclick="downloads()" style="margin-right:8px">عرض تنزيلاتي</button></div>
 <div class="card"><h2><span class="icon">⬇️</span> تنزيل صورة أو فيديو</h2><p class="muted">ألصق رابط ملف مباشر ينتهي مثلًا بـ mp4 أو jpg، وليس رابط صفحة منشور.</p><input id="mediaUrl" placeholder="https://example.com/video.mp4" spellcheck="false">
-<div class="actions"><button class="btn primary flex" onclick="downloadMedia()">تنزيل الملف</button><button class="btn" onclick="pasteTo('mediaUrl')">لصق الرابط</button></div><div class="notice">رابط المنشور أو الريلز لا يُحوّل تلقائيًا إلى ملف. افتحه في إنستغرام، واحفظ رابطه هنا.</div></div>
+<div class="actions"><button class="btn primary flex" onclick="downloadMedia()">تنزيل الملف</button><button class="btn" onclick="pasteTo('mediaUrl')">لصق الرابط</button></div><div class="notice">للتنزيل من منشورات إنستغرام استخدم زر «استخراج وتنزيل» داخل المتصفح. هذا الحقل مخصص لرابط ملف صورة أو فيديو مباشر.</div></div>
 <div class="card"><h2><span class="icon">💬</span> نسخ التعليقات</h2><p class="muted">داخل متصفح إنستغرام اضغط «نسخ التعليقات» لاستخراج التعليقات الظاهرة عندما تسمح الصفحة بذلك. أو الصق النص هنا.</p>
 <textarea id="comments" placeholder="الصق أي تعليق هنا لنسخه أو تعديله..."></textarea><div class="actions"><button class="btn primary flex" onclick="copyComments()">نسخ التعليقات</button><button class="btn" onclick="pasteTo('comments')">لصق</button><button class="btn secondary" onclick="saveNote()">حفظ ملاحظة</button></div></div>
 <div class="card"><h2><span class="icon">📁</span> استعراض صور ومقاطع الجهاز</h2><p class="muted">افتح ملفاتك المحلية للمراجعة قبل المشاركة.</p><input id="localFiles" type="file" accept="image/*,video/*" multiple><div id="fileInfo" class="muted"></div></div></section>
-<section id="saved" class="section"><h1 class="intro">المحفوظات ♡</h1><p class="muted">الروابط والملاحظات محفوظة محليًا على جهازك.</p><div class="card"><label>بحث في المحفوظات</label><input id="filter" placeholder="ابحث عن اسم أو رابط..." oninput="renderSaved()"><div id="savedList"></div><div class="actions"><button class="btn secondary" onclick="exportSaved()">مشاركة قائمة الروابط</button><button class="btn" onclick="clearSaved()">حذف الكل</button></div></div></section>
-<section id="settings" class="section"><h1 class="intro">الإعدادات ⚙️</h1><div class="card"><h2>InstaTools 1.0</h2><p class="muted">مصمم خصيصًا لهواتف أندرويد. المتصفح الداخلي يستخدم جلسة منفصلة محفوظة محليًا؛ لا نحفظ كلمة مرور إنستغرام داخل التطبيق.</p><div class="divider"></div><button class="btn primary" onclick="navigate('https://www.instagram.com/')">فتح إنستغرام</button><div class="notice">المحتوى غير المتاح لحسابك في إنستغرام يبقى غير متاح هنا أيضًا. روابط الملفات المباشرة تُنزّل إلى مجلد Downloads/InstaTools.</div></div></section>
+<section id="saved" class="section"><h1 class="intro">المحفوظات ♡</h1><p class="muted">روابطك وملاحظاتك محفوظة محليًا. الصور والفيديوهات المنزّلة تُحفظ في المعرض.</p><div class="card"><h2>📥 الصور والفيديوهات المحفوظة</h2><button class="btn primary" onclick="downloads()">افتح التنزيلات المحفوظة</button></div><div class="card"><label>بحث في المحفوظات</label><input id="filter" placeholder="ابحث عن اسم أو رابط..." oninput="renderSaved()"><div id="savedList"></div><div class="actions"><button class="btn secondary" onclick="exportSaved()">مشاركة قائمة الروابط</button><button class="btn" onclick="clearSaved()">حذف الكل</button></div></div></section>
+<section id="settings" class="section"><h1 class="intro">الإعدادات ⚙️</h1><div class="card"><h2>InstaTools 1.0</h2><p class="muted">نسخة أندرويد 2.0 — تنزيل حقيقي عبر روابط ملفات الصور والفيديو التي يكتشفها المتصفح. يحفظ الملفات في صور أو أفلام InstaTools.</p><div class="divider"></div><button class="btn primary" onclick="navigate('https://www.instagram.com/')">فتح إنستغرام</button><div class="notice">قد تفشل بعض الملفات بسبب حماية إنستغرام أو لأنها تُعرض بصيغة blob بدون رابط تنزيل مباشر. التطبيق يوضح عند نجاح الحفظ أو فشله. المحتوى الخاص يظهر وفق صلاحية الحساب المسجّل.</div></div></section>
 </main><nav class="tabs"><button id="t-home" class="tab active" onclick="show('home')"><span>⌂</span>الرئيسية</button><button id="t-tools" class="tab" onclick="show('tools')"><span>▦</span>الأدوات</button><button id="t-saved" class="tab" onclick="show('saved')"><span>♡</span>المحفوظات</button><button id="t-settings" class="tab" onclick="show('settings')"><span>⚙</span>الإعدادات</button></nav><div id="toast" class="toast"></div>
 <script>
 const KEY='instatools.saved.v1';
@@ -60,6 +65,7 @@ function persist(){localStorage.setItem(KEY,JSON.stringify(saved));renderSaved()
 function chooseType(type){show('home');el('link').focus();el('link').placeholder=type==='stories'?'رابط ستوري /stories/...':type==='reels'?'رابط ريلز /reel/...':'رابط منشور /p/...';notify('الصق الرابط المطلوب ثم افتحه');}
 function copy(s){if(window.App)App.copy(s);else navigator.clipboard.writeText(s).then(()=>notify('تم النسخ'));}
 function pasteTo(id){if(window.App){el(id).value=App.clipboard();if(!el(id).value)notify('الحافظة فارغة');}else notify('اللصق غير متاح');}
+function downloads(){if(window.App)App.downloads();else notify('افتحها على أندرويد');}
 function downloadMedia(){let u=el('mediaUrl').value.trim();if(!/^https:\/\/.+\.(jpg|jpeg|png|webp|mp4|mov|m4v|gif|heic)(\?.*)?$/i.test(u))return notify('مطلوب رابط ملف مباشر .mp4 أو .jpg');if(window.App)App.downloadDirect(u);}
 function copyComments(){let s=el('comments').value.trim();if(!s)return notify('اكتب أو الصق التعليقات أولًا');copy(s);}
 function saveNote(){let s=el('comments').value.trim();if(!s)return notify('اكتب النص أولًا');save('note:'+s,'ملاحظة');}
