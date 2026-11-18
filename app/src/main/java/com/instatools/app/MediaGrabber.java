@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -48,6 +50,7 @@ public class MediaGrabber {
     private String ua = "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 Chrome/130.0 Mobile Safari/537.36";
     private String pendingUrl = null;
     private String pendingKind = null;
+    private WebView pendingScreenshot = null;
 
     static class Item {
         final String url;
@@ -173,9 +176,70 @@ public class MediaGrabber {
     }
     void permissionResult(int requestCode,int[] grants){
         if(requestCode!=481)return;
-        if(grants.length>0 && grants[0]==PackageManager.PERMISSION_GRANTED && pendingUrl!=null)startSave(pendingUrl,pendingKind);
-        else toast("لا يمكن حفظ الملفات بدون إذن التخزين");
-        pendingUrl=null;pendingKind=null;
+        if(grants.length>0 && grants[0]==PackageManager.PERMISSION_GRANTED){
+            if(pendingUrl!=null)startSave(pendingUrl,pendingKind);
+            else if(pendingScreenshot!=null)saveScreenshotInternal(pendingScreenshot);
+        } else toast("لا يمكن حفظ الملفات بدون إذن التخزين");
+        pendingUrl=null;pendingKind=null;pendingScreenshot=null;
+    }
+
+    void saveScreenshot(WebView web) {
+        if(web==null || web.getWidth()<=0 || web.getHeight()<=0){
+            toast("افتح المنشور أو الصورة أولًا");
+            return;
+        }
+        if(Build.VERSION.SDK_INT<29 && activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED){
+            pendingScreenshot=web;
+            activity.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},481);
+            return;
+        }
+        saveScreenshotInternal(web);
+    }
+    private void saveScreenshotInternal(WebView web) {
+        Uri inserted=null;File oldFile=null;
+        try{
+            Bitmap bmp=Bitmap.createBitmap(web.getWidth(),web.getHeight(),Bitmap.Config.ARGB_8888);
+            web.draw(new Canvas(bmp));
+            String filename="InstaTools_Screenshot_"+new SimpleDateFormat("yyyyMMdd_HHmmss",Locale.US).format(new Date())+".png";
+            OutputStream out;
+            if(Build.VERSION.SDK_INT>=29){
+                ContentValues vals=new ContentValues();
+                vals.put(MediaStore.MediaColumns.DISPLAY_NAME,filename);
+                vals.put(MediaStore.MediaColumns.MIME_TYPE,"image/png");
+                vals.put(MediaStore.MediaColumns.RELATIVE_PATH,Environment.DIRECTORY_PICTURES+"/InstaTools");
+                vals.put(MediaStore.MediaColumns.IS_PENDING,1);
+                inserted=activity.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,vals);
+                if(inserted==null)throw new Exception("تعذر إنشاء الصورة");
+                out=activity.getContentResolver().openOutputStream(inserted);
+            }else{
+                File folder=new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"InstaTools");
+                if(!folder.exists()&&!folder.mkdirs())throw new Exception("تعذر إنشاء مجلد الصورة");
+                oldFile=new File(folder,filename);
+                out=new FileOutputStream(oldFile);
+            }
+            if(out==null)throw new Exception("تعذر حفظ اللقطة");
+            try(OutputStream stream=out){
+                if(!bmp.compress(Bitmap.CompressFormat.PNG,100,stream))throw new Exception("فشل كتابة اللقطة");
+            }
+            bmp.recycle();
+            Uri saved;
+            if(Build.VERSION.SDK_INT>=29){
+                ContentValues done=new ContentValues();done.put(MediaStore.MediaColumns.IS_PENDING,0);
+                activity.getContentResolver().update(inserted,done,null,null);saved=inserted;
+            }else{
+                MediaScannerConnection.scanFile(activity,new String[]{oldFile.getAbsolutePath()},new String[]{"image/png"},null);
+                saved=Uri.fromFile(oldFile);
+            }
+            record(filename,"image",saved.toString());
+            new AlertDialog.Builder(activity).setTitle("✅ تم حفظ اللقطة")
+                .setMessage("الصورة محفوظة في معرض الجهاز داخل Pictures/InstaTools.")
+                .setPositiveButton("عرض الصورة",(d,w)->openMedia(saved,false))
+                .setNegativeButton("تم",null).show();
+        }catch(Exception e){
+            if(inserted!=null)activity.getContentResolver().delete(inserted,null,null);
+            if(oldFile!=null && oldFile.exists())oldFile.delete();
+            toast("تعذر حفظ اللقطة: "+e.getMessage());
+        }
     }
 
     private void startSave(String raw,String kind){
@@ -279,7 +343,7 @@ public class MediaGrabber {
                     MediaScannerConnection.scanFile(activity,new String[]{oldFile.getAbsolutePath()},new String[]{mime},null);
                     savedUri=Uri.fromFile(oldFile);
                 }
-                record(filename,kind,savedUri.toString());
+                record(filename,actualVideo?"video":"image",savedUri.toString());
                 activity.runOnUiThread(()->{
                     dialog.dismiss();
                     new AlertDialog.Builder(activity).setTitle("✅ تم الحفظ بنجاح")
