@@ -19,6 +19,7 @@ public class MainActivity extends Activity {
     private FrameLayout root;
     private WebView home;
     private WebView remote;
+    private MediaGrabber grabber;
     private LinearLayout toolbar;
     private ValueCallback<Uri[]> filePicker;
     private static final int FILE_CODE = 704;
@@ -49,6 +50,7 @@ public class MainActivity extends Activity {
         });
         root.addView(home,new FrameLayout.LayoutParams(-1,-1));
         setContentView(root);
+        grabber=new MediaGrabber(this);
         home.loadUrl("file:///android_asset/index.html");
         Intent intent=getIntent();
         if(intent!=null && Intent.ACTION_SEND.equals(intent.getAction())) {
@@ -84,18 +86,8 @@ public class MainActivity extends Activity {
         }catch(Exception e){return false;}
     }
     private void download(String url) {
-        if(!safeMedia(url)){toast("يلزم رابط ملف صورة أو فيديو مباشر، وليس رابط منشور");return;}
-        try{
-            String fname=Uri.parse(url).getLastPathSegment();
-            if(fname==null || fname.isEmpty())fname="instatools-media";
-            DownloadManager.Request rq=new DownloadManager.Request(Uri.parse(url));
-            rq.setTitle(fname);
-            rq.setDescription("InstaTools");
-            rq.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-            rq.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,"InstaTools/"+fname);
-            DownloadManager dm=(DownloadManager)getSystemService(DOWNLOAD_SERVICE);
-            dm.enqueue(rq);toast("بدأ التنزيل إلى Downloads/InstaTools");
-        }catch(Exception e){toast("تعذر بدء التنزيل: "+e.getMessage());}
+        if(!safeMedia(url)){toast("ضع رابط ملف صورة أو فيديو مباشر");return;}
+        grabber.downloadDirect(url);
     }
     private void openInstagram(String url){
         if(!safeInstagram(url)){toast("هذا الرابط ليس من إنستغرام");return;}
@@ -110,6 +102,10 @@ public class MainActivity extends Activity {
             CookieManager.getInstance().setAcceptCookie(true);
             CookieManager.getInstance().setAcceptThirdPartyCookies(remote,true);
             remote.setWebViewClient(new WebViewClient(){
+              @Override public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request){
+                  grabber.intercept(request);
+                  return null;
+              }
               @Override public boolean shouldOverrideUrlLoading(WebView v,WebResourceRequest request){
                 Uri u=request.getUrl();String host=u.getHost()==null?"":u.getHost().toLowerCase(Locale.ROOT);
                 if(!"https".equalsIgnoreCase(u.getScheme()))return true;
@@ -126,13 +122,14 @@ public class MainActivity extends Activity {
             toolbar = new LinearLayout(this);
             toolbar.setOrientation(LinearLayout.HORIZONTAL);toolbar.setGravity(Gravity.CENTER_VERTICAL);
             toolbar.setBackgroundColor(Color.rgb(27,27,43));toolbar.setPadding(dp(7),dp(3),dp(7),dp(3));
-            addButton("⌂ الأدوات",()->closeRemote());
-            addButton("↶",()->{if(remote!=null&&remote.canGoBack())remote.goBack();});
-            addButton("⧉ نسخ التعليقات",()->copyVisibleComments());
-            addButton("↗",()->{if(remote!=null){ try{startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse(remote.getUrl())));}catch(Exception e){} }});
+            addButton("⬇ تنزيل/حفظ",()->grabber.captureDom(remote));
+            addButton("📥 ملفاتي",()->grabber.showHistory());
+            addButton("⧉ تعليق",()->copyVisibleComments());
+            addButton("✕ رجوع",()->closeRemote());
             FrameLayout.LayoutParams barp=new FrameLayout.LayoutParams(-1,dp(58),Gravity.BOTTOM);
             root.addView(toolbar,barp);
             FrameLayout.LayoutParams rlp=(FrameLayout.LayoutParams)remote.getLayoutParams();rlp.bottomMargin=dp(58);remote.setLayoutParams(rlp);
+            grabber.startPage(url);
             remote.loadUrl(url);
         });
     }
@@ -159,6 +156,10 @@ public class MainActivity extends Activity {
             }catch(Exception e){toast("تعذر نسخ التعليقات من هذه الصفحة");}
         });
     }
+    @Override public void onRequestPermissionsResult(int requestCode,String[] permissions,int[] grantResults){
+        super.onRequestPermissionsResult(requestCode,permissions,grantResults);
+        if(grabber!=null)grabber.permissionResult(requestCode,grantResults);
+    }
     @Override public void onBackPressed(){
         if(remote!=null){if(remote.canGoBack())remote.goBack();else closeRemote();}
         else if(home.canGoBack())home.goBack();else super.onBackPressed();
@@ -167,6 +168,7 @@ public class MainActivity extends Activity {
     public class Bridge {
         @JavascriptInterface public void openInstagram(String url){MainActivity.this.openInstagram(url);}
         @JavascriptInterface public void downloadDirect(String url){runOnUiThread(()->download(url));}
+        @JavascriptInterface public void downloads(){runOnUiThread(()->grabber.showHistory());}
         @JavascriptInterface public void copy(String text){
             ((android.content.ClipboardManager)getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("InstaTools",text));toast("تم النسخ");
         }
